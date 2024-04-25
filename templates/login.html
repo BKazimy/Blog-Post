@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% from "bootstrap5/form.html" import render_form %}
+{% set header_bg_image = "https://e1.pxfuel.com/desktop-wallpaper/348/740/desktop-wallpaper-uchiha-madara-high-quality-1920x1080-for-your-mobile-tablet-madara-uchiha-computer.jpg" %}
+
+
+<!-- Page Header -->
+          {% block header %}
+          <h1>Log In</h1>
+          <span class="subheading">Careful!</span>
+          {% endblock %}
+
+{% block content %}
+<main class="mb-4">
+  <div class="container">
+    <div class="row">
+      <!-- TODO: add a flash message here for users registering twice -->
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <!--TODO: render login form here-->
+      {{ render_form(form) }}
+      <div class="p-4">
+        <a href="{{ url_for('register') }}">Create New</a>
+      </div>  
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}

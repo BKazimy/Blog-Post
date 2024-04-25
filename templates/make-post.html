@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% from "bootstrap5/form.html" import render_form %}
+{% set header_bg_image = "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2022/04/Naruto-Killer-B.jpg" %}
+
+<!-- Page Header -->
+{% block header %}
+          {% if is_edit: %}
+          <h1>Edit Post</h1>
+          {% else: %}
+          <h1>New Post</h1>
+          {% endif %}
+          <span class="subheading">You're going to make a great blog post!</span>
+{% endblock %}
+
+{% block content %}
+<main class="mb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        {{ render_form(form) }}
+      </div>
+    </div>
+  </div>
+</main>
+
+{{ ckeditor.load() }}
+{{ ckeditor.config(name='body') }}
+
+{% endblock %}
