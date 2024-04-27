@@ -1,14 +1,37 @@
 {% extends 'base.html' %}
 {% set header_bg_image = "https://cdn.wallpapersafari.com/1/85/y2lb7V.jpg" %}
 
+
 {% block content %}
 <!-- Main Content-->
 <div class="container px-4 px-lg-5">
   <div class="row gx-4 gx-lg-5 justify-content-center">
     <div class="col-md-10 col-lg-8 col-xl-7">
+
+      <!-- New Post -->
+      <!-- TODO: Only show Create Post button if user id is 1 (admin user) -->
+      {% if admin %}
+      <div class="d-flex justify-content-end mb-4">
+        <a
+          class="btn btn-primary float-right"
+          href="{{url_for('new_post')}}"
+          >Create New Post</a
+        >
+      </div>
+      {% endif %}
+
+      <!-- Pager-->
+      <div class="d-flex justify-content-end mb-4">
+        <a class="btn btn-secondary text-uppercase" href="#posts">Older Posts →</a>
+      </div>
+      {{ password }}
+
+      <!-- Divider-->
+      <hr class="my-4" />
+
       <!-- Post preview-->
       {% for post in posts %}
-      <div class="post-preview">
+      <div class="post-preview" id="posts">
         <a href="{{ url_for('show_post', post_id=post.id) }}">
           <h2 class="post-title">{{ post.title }}</h2>
           <h3 class="post-subtitle">{{ post.subtitle }}</h3>
@@ -23,24 +46,8 @@
           {% endif %}
         </p>
       </div>
-      <!-- Divider-->
-      <hr class="my-4" />
       {% endfor %}
-
-      <!-- New Post -->
-      <!-- TODO: Only show Create Post button if user id is 1 (admin user) -->
-      <div class="d-flex justify-content-end mb-4">
-        <a
-          class="btn btn-primary float-right"
-          href="{{url_for('new_post')}}"
-          >Create New Post</a
-        >
-      </div>
-
-      <!-- Pager-->
-      <div class="d-flex justify-content-end mb-4">
-        <a class="btn btn-secondary text-uppercase" href="#!">Older Posts →</a>
-      </div>
+      
     </div>
   </div>
 </div>
