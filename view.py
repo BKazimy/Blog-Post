@@ -5,7 +5,7 @@ from flask_ckeditor import CKEditor
 # from flask_gravatar import Gravatar
 from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user, login_required
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column, deferred
 from sqlalchemy import Integer, String, Text, Column, select, ForeignKey
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -74,7 +74,7 @@ class User(db.Model, UserMixin):
     
     name = Column('name', String)
     email = Column('email', String)
-    password = Column('password', String)
+    password = deferred(Column('password', String))
     profile = Column('photo', String, nullable=True)
    
    
@@ -151,10 +151,13 @@ def login():
         email = login_form.email.data
         password = login_form.password.data
         print(email)
-        if login_user(user := db.session.execute(select(User).filter(User.email==email)).scalar_one_or_none()):
+        
+        if user := db.session.execute(select(User).filter(User.email==email)).scalar_one_or_none():
+            print("we got user data")
             if check_password_hash(user.password, password):
                 # login_user(user)
                 flash(f"Welcome {user.name}", 'success')
+                login_user(user)
                 return redirect(url_for('home'))
             else:
                 flash("Wrong user credentials!", 'danger')
