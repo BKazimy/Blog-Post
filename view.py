@@ -82,10 +82,11 @@ class User(db.Model, UserMixin):
 class BlogPost(db.Model):
     __tablename__ = "blog_posts"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey(User.id))
+    
+    user_id: Mapped[int] = mapped_column(ForeignKey(User.id, ondelete='SET NULL'), nullable=True)
 
-    comments: Mapped[list['Comment']] = relationship(cascade='all, delete', passive_deletes=True)
     user: Mapped['User'] = relationship(back_populates='posts', foreign_keys=[user_id])
+    comments: Mapped[list['Comment']] = relationship(cascade='all, delete', passive_deletes=True)
     
     title: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
     subtitle: Mapped[str] = mapped_column(String(250), nullable=False)
@@ -100,7 +101,8 @@ class Comment(db.Model):
     id: Mapped[int] = mapped_column('id', Integer, primary_key=True)
     
     post_id: Mapped[int] = mapped_column(ForeignKey(BlogPost.id, ondelete='CASCADE'))
-    user_id: Mapped[int] = mapped_column(ForeignKey(User.id))
+    user_id: Mapped[int] = mapped_column(ForeignKey(User.id, ondelete='SET NULL'), nullable=True)
+    
     post: Mapped['BlogPost'] = relationship(back_populates="comments", foreign_keys=[post_id])
     user: Mapped['User'] = relationship(back_populates='comments', foreign_keys=[user_id])
     

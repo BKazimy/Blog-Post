@@ -1,3 +1,4 @@
+{% set title = title or "Blog Post" %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +10,7 @@
     />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Angela's Blog</title>
+    <title>{{ title }}</title>
     {% block styles %}
     <!-- Load Bootstrap-Flask CSS here -->
     {{ bootstrap.load_css() }}
