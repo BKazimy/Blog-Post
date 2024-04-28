@@ -9,12 +9,13 @@ from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column,
 from sqlalchemy import Integer, String, Text, Column, select, ForeignKey
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
+from os import environ
+from dotenv import load_dotenv
 
 # Import your forms from the forms.py
 import forms
-import os
 
-# os.load_env()
+load_dotenv()
 
 
 '''
@@ -30,8 +31,10 @@ pip3 install -r requirements.txt
 This will install the packages from the requirements.txt for this project.
 '''
 
+print(environ.get('FLASK_KEY'))
+
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('FLASK_KEY')
+app.config['SECRET_KEY'] = environ.get('FLASK_KEY')
 ckeditor = CKEditor(app)
 Bootstrap5(app)
 
@@ -59,11 +62,12 @@ def is_authorized():
     
     return ret
 
+print(environ.get('DB_URI'))
 
 # CREATE DATABASE
 class Base(DeclarativeBase):
     pass
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI')
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DB_URI')
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
